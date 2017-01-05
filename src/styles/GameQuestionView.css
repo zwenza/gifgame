@@ -1,0 +1,37 @@
+.game-question {
+
+}
+
+.game-question .gif {
+  text-align: center;
+}
+
+.game-question .words-wrapper {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.game-question .words-wrapper span {
+  margin: 0.5rem 1rem;
+  font-size: 2rem;
+  flex: 0 1 auto;
+}
+
+.game-question .input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-question .input input[type="text"] {
+  padding: 25px 10px;
+  font-size: 2rem;
+}
+
+.game-question .input .counter {
+  text-align: center;
+  font-size: 2rem;
+}

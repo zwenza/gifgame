@@ -49,7 +49,9 @@ class Lobby extends Component {
   listPlayers = () => {
     const self = this;
 
-    if (this.state.waitingUsers.length === 0) {
+    console.log(this.props)
+
+    if (this.state.loading) {
       return <Spinner />;
     }
 

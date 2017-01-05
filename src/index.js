@@ -10,6 +10,8 @@ import store from './store.js'
 import App from './components/App';
 import StartGame from './components/layouts/StartGame';
 import Lobby from './components/layouts/Lobby'
+import Game from './components/game/Game'
+
 
 
 // styles
@@ -34,6 +36,7 @@ const app = (
       <Route path="/" component={App}>
         <IndexRoute component={StartGame}/>
         <Route path="/lobby" component={Lobby} onEnter={requireGamertag}/>
+        <Route path="/game" component={Game} />
       </Route>
     </Router>
   </Provider>
