@@ -1,0 +1,12 @@
+.lobby .list-group-item {
+  outline: none;
+}
+
+.lobby .list-group-item:hover {
+  background-color: lightgrey;
+  cursor: pointer;
+}
+
+.lobby h1 {
+  text-align: center;
+}
