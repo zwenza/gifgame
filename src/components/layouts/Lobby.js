@@ -30,9 +30,9 @@ class Lobby extends Component {
     });
 
     const inviteRef = firebase.database().ref('invite/' + this.props.user.name);
-    inviteRef.on('value', function(snapshot) {
+    inviteRef.on('value', (snapshot) => {
       if(snapshot.val() !== null){
-        self.setState({
+        this.setState({
           showInvite: true,
           invitedBy: snapshot.val().by
         });
