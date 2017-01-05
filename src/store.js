@@ -6,8 +6,9 @@ import * as firebase from 'firebase';
 import { browserHistory } from 'react-router'
 import { routerMiddleware } from 'react-router-redux'
 
-var config = {
-};
+import { firebaseConfig } from './config/firebase';
+
+const config = firebaseConfig;
 
 firebase.initializeApp(config);
 
