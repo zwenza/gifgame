@@ -44,6 +44,7 @@ class Lobby extends Component {
 
   createLobby = () => {
     this.props.actions.createLobby(this.state.otherPlayer);
+    this.close();
   }
 
   // modal methods
@@ -95,7 +96,11 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(UserActions, dispatch),
 });
 
+const mapStateToProps = state => ({
+  user: state.user
+})
+
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Lobby);
