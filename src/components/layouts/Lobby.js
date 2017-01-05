@@ -16,7 +16,10 @@ class Lobby extends Component {
     this.state = {
       waitingUsers: [],
       otherPlayer: '',
-      showModal: false
+      showModal: false,
+      showInvite: false,
+      invitedBy: '',
+      showDeclinedModal: false
     };
   }
 
@@ -24,6 +27,16 @@ class Lobby extends Component {
     var waitingRef = firebase.database().ref('waiting/');
     waitingRef.on('value', (snapshot) => {
       this.setState({waitingUsers: Object.keys(snapshot.val()).map(obj => obj)});
+    });
+
+    const inviteRef = firebase.database().ref('invite/' + this.props.user.name);
+    inviteRef.on('value', function(snapshot) {
+      if(snapshot.val() !== null){
+        self.setState({
+          showInvite: true,
+          invitedBy: snapshot.val().by
+        });
+      }
     });
   }
 
@@ -42,12 +55,51 @@ class Lobby extends Component {
     this.open();
   }
 
-  createLobby = () => {
-    this.props.actions.createLobby(this.state.otherPlayer);
+  invitePlayer = () => {
+    this.props.actions.invitePlayer(this.state.otherPlayer);
     this.close();
+
+    const acceptedRef = firebase.database().ref('accept/' + this.state.otherPlayer);
+    acceptedRef.on('value', (snapshot) => {
+      firebase.database().ref('accept/' + this.state.otherPlayer).set(null);
+
+      //start game
+      if(snapshot.val() !== null){
+        alert('accepted!');
+      }
+    });
+
+    const declinedRef = firebase.database().ref('decline/' + this.state.otherPlayer);
+    declinedRef.on('value', (snapshot) => {
+      firebase.database().ref('decline/' + this.state.otherPlayer).set(null);
+
+      if(snapshot.val() !== null){
+        this.props.actions.createUser(this.props.user.name);
+        this.setState({
+          showDeclinedModal: true
+        });
+      }
+    });
+  }
+
+  declineInvite = () => {
+    this.props.actions.declineInvite();
+    this.props.actions.createUser(this.props.user.name);
+
+    this.setState({
+      showInvite: false,
+      invitedBy: ''
+    });
+  }
+
+  acceptInvite = () => {
+    this.props.actions.acceptInvite();
   }
 
   // modal methods
+  closeDeclinedModal = () => {
+    this.setState({ showDeclinedModal: false });
+  }
 
   close = () => {
     this.setState({ showModal: false });
@@ -57,11 +109,19 @@ class Lobby extends Component {
     this.setState({ showModal: true });
   }
 
-  acceptInvite = () => {
-    this.props.actions.acceptInvite();
-  }
-
   render(){
+    const declinedModal = (
+      <Modal show={this.state.showDeclinedModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Game Request declined!!!! WTF??</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Footer>
+          <Button bsStyle="danger" onClick={this.closeDeclinedModal}>Cancel</Button>
+        </Modal.Footer>
+
+      </Modal>
+    )
 
     const modal = (
       <Modal show={this.state.showModal} onHide={this.close}>
@@ -70,8 +130,22 @@ class Lobby extends Component {
         </Modal.Header>
 
         <Modal.Footer>
-          <Button bsStyle="primary" onClick={this.createLobby}>Create Lobby</Button>
+          <Button bsStyle="primary" onClick={this.invitePlayer}>Create Lobby</Button>
           <Button bsStyle="danger" onClick={this.close}>Cancel</Button>
+        </Modal.Footer>
+
+      </Modal>
+    )
+
+    const acceptModal = (
+      <Modal show={this.state.showInvite} onHide={this.declineInvite}>
+        <Modal.Header closeButton>
+          <Modal.Title>Play against <strong>{this.state.invitedBy}</strong> ?</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Footer>
+          <Button bsStyle="primary" onClick={this.acceptInvite}>Play</Button>
+          <Button bsStyle="danger" onClick={this.declineInvite}>Decline</Button>
         </Modal.Footer>
 
       </Modal>
@@ -87,6 +161,8 @@ class Lobby extends Component {
         </Col>
 
         {modal}
+        {acceptModal}
+        {declinedModal}
       </Row>
     );
   }
