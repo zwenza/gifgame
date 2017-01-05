@@ -1,4 +1,4 @@
-import { CREATE_USER } from '../constants/ActionTypes'
+import { CREATE_USER, CREATE_LOBBY_SUCCESS } from '../constants/ActionTypes'
 
 export default function(state = {}, action) {
   switch(action.type){
