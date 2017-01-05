@@ -12,7 +12,7 @@ class StartGame extends Component {
   constructor() {
     super();
     this.state = {
-      value: ''
+      value: '',
     }
   }
 
@@ -20,7 +20,8 @@ class StartGame extends Component {
     this.setState({value: e.target.value})
   }
 
-  createUser = () => {
+  createUser = (e) => {
+    e.preventDefault();
     this.props.actions.createUser(this.state.value);
     this.props.changeToLobby();
   }
@@ -32,14 +33,14 @@ class StartGame extends Component {
           <Row>
             <Col md={6} mdOffset={3}>
               <h1>Enter your Gamer Tag</h1>
-              <form className="start-game-form">
+              <form className="start-game-form" onSubmit={this.createUser}>
                   <FormControl
                     type="text"
                     value={this.state.value}
                     placeholder="TheLegend27"
                     onChange={this.handleChange}
                   />
-                  <Button bsStyle="primary" bsSize="large" onClick={this.createUser} block>Play</Button>
+                  <Button bsStyle="primary" bsSize="large" onClick={this.createUser} block disabled={this.state.value === ''}>Play</Button>
               </form>
             </Col>
           </Row>
