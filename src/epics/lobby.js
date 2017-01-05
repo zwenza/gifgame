@@ -41,3 +41,31 @@ export const createLobby = (action$, store) => action$
       },
     }
   ));
+
+export const acceptLobbyInvite = (action$, store) => action$
+  .ofType(ActionTypes.ACCEPTED_INVITE)
+  .do(action => firebase.database().ref('lobby/' + store.getState().lobby.name).set(
+    store.getState().lobby.players.player1.username === store.getState().user.name ? {
+      player1: Object.assign({}, store.getState().lobby.player1, {
+        accepted: true
+      })
+    } : {
+      player2: Object.assign({}, store.getState().lobby.player2, {
+        accepted: true
+      })
+    }
+  ))
+  .map(action => ({
+    type: ActionTypes.ACCEPTED_INVITE_SUCCESS,
+    payload: {
+      username: store.getState().user.name
+    }
+  }))
+  .catch(error => Observable.of(
+    {
+      type: ActionTypes.ACCEPTED_INVITE_FAILURE,
+      payload: {
+        error,
+      },
+    }
+  ));

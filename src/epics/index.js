@@ -1,10 +1,11 @@
 import { createUser } from './user'
-import { createLobby } from './lobby'
+import { createLobby, acceptLobbyInvite } from './lobby'
 import { combineEpics } from 'redux-observable'
 
 const rootEpic = combineEpics(
   createUser,
-  createLobby
+  createLobby,
+  acceptLobbyInvite
 );
 
 export default rootEpic;

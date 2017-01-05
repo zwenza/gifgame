@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Row, Col, ListGroup, ListGroupItem, Modal, Button } from 'react-bootstrap';
 import firebase from 'firebase';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as UserActions from '../../actions/user'
 
 import Spinner from '../Spinner';
 
@@ -40,8 +43,7 @@ class Lobby extends Component {
   }
 
   createLobby = () => {
-    console.log(`TODO create Lobby with ${this.state.otherPlayer}`);
-    // TODO: go to lobby with player
+    this.props.actions.createLobby(this.state.otherPlayer);
   }
 
   // modal methods
@@ -52,6 +54,10 @@ class Lobby extends Component {
 
   open = () => {
     this.setState({ showModal: true });
+  }
+
+  acceptInvite = () => {
+    this.props.actions.acceptInvite();
   }
 
   render(){
@@ -85,4 +91,11 @@ class Lobby extends Component {
   }
 }
 
-export default Lobby;
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(UserActions, dispatch),
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Lobby);
