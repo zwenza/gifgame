@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, FormControl, Button } from 'react-bootstrap';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import * as UserActions from '../../actions/user'
 
 import '../../styles/StartGame.css';
 
@@ -10,12 +13,14 @@ class StartGame extends Component {
     this.state = {
       value: ''
     }
-
-    this.handleChange = this.handleChange.bind(this);
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     this.setState({value: e.target.value})
+  }
+
+  createUser = () => {
+    this.props.actions.createUser(this.state.value);
   }
 
   render() {
@@ -32,7 +37,7 @@ class StartGame extends Component {
                     placeholder="TheLegend27"
                     onChange={this.handleChange}
                   />
-                  <Button bsStyle="primary" bsSize="large" block>Play</Button>
+                  <Button bsStyle="primary" bsSize="large" onClick={this.createUser} block>Play</Button>
               </form>
             </Col>
           </Row>
@@ -40,7 +45,13 @@ class StartGame extends Component {
       </div>
     )
   }
-
 }
 
-export default StartGame;
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(UserActions, dispatch)
+});
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(StartGame);
