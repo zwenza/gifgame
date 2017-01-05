@@ -8,7 +8,6 @@ import App from './components/App';
 
 // styles
 import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import './styles/index.css';
 
 const app = (
