@@ -3,8 +3,11 @@ import { Row, Col, ListGroup, ListGroupItem, Modal, Button } from 'react-bootstr
 import firebase from 'firebase';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import * as UserActions from '../../actions/user'
 import { push } from 'react-router-redux';
+
+import * as UserActions from '../../actions/user'
+import * as LobbyActions from '../../actions/lobby'
+import * as GameActions from '../../actions/game'
 
 import Spinner from '../Spinner';
 
@@ -59,15 +62,16 @@ class Lobby extends Component {
   }
 
   invitePlayer = () => {
-    this.props.actions.invitePlayer(this.state.otherPlayer);
+    this.props.lobbyActions.invitePlayer(this.state.otherPlayer);
     this.close();
 
     const acceptedRef = firebase.database().ref('accept/' + this.state.otherPlayer);
     acceptedRef.on('value', (snapshot) => {
       firebase.database().ref('accept/' + this.state.otherPlayer).set(null);
 
-      //start game
       if(snapshot.val() !== null){
+        // start game
+        this.props.gameActions.createGame(this.state.otherPlayer);
         alert('accepted!');
       }
     });
@@ -77,7 +81,7 @@ class Lobby extends Component {
       firebase.database().ref('decline/' + this.state.otherPlayer).set(null);
 
       if(snapshot.val() !== null){
-        this.props.actions.createUser(this.props.user.name);
+        this.props.userActions.createUser(this.props.user.name);
         this.setState({
           showDeclinedModal: true
         });
@@ -86,8 +90,8 @@ class Lobby extends Component {
   }
 
   declineInvite = () => {
-    this.props.actions.declineInvite();
-    this.props.actions.createUser(this.props.user.name);
+    this.props.lobbyActions.declineInvite();
+    this.props.userActions.createUser(this.props.user.name);
 
     this.setState({
       showInvite: false,
@@ -96,7 +100,7 @@ class Lobby extends Component {
   }
 
   acceptInvite = () => {
-    this.props.actions.acceptInvite();
+    this.props.lobbyActions.acceptInvite();
   }
 
   // modal methods
@@ -172,7 +176,9 @@ class Lobby extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(UserActions, dispatch),
+  userActions: bindActionCreators(UserActions, dispatch),
+  lobbyActions: bindActionCreators(LobbyActions, dispatch),
+  gameActions: bindActionCreators(GameActions, dispatch),
   redirectBack: () => dispatch(push('/'))
 });
 

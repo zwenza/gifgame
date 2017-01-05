@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer } from 'react-router-redux'
 
-import user from './user';
-import lobby from './lobby';
+import user from './user'
+import game from './game'
 
 const rootReducer = combineReducers({
   user,
-  lobby,
+  game,
   routing: routerReducer
 });
 
