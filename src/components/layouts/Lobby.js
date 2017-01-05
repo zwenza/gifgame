@@ -4,14 +4,15 @@ import firebase from 'firebase';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UserActions from '../../actions/user'
+import { push } from 'react-router-redux';
 
 import Spinner from '../Spinner';
 
 import '../../styles/Lobby.css';
 
 class Lobby extends Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state = {
       waitingUsers: [],
       otherPlayer: '',
@@ -21,9 +22,8 @@ class Lobby extends Component {
 
   componentDidMount(){
     var waitingRef = firebase.database().ref('waiting/');
-    var self = this;
-    waitingRef.on('value', function(snapshot) {
-      self.setState({waitingUsers: Object.keys(snapshot.val()).map(obj => obj)});
+    waitingRef.on('value', (snapshot) => {
+      this.setState({waitingUsers: Object.keys(snapshot.val()).map(obj => obj)});
     });
   }
 
@@ -94,6 +94,7 @@ class Lobby extends Component {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(UserActions, dispatch),
+  redirectBack: () => dispatch(push('/'))
 });
 
 const mapStateToProps = state => ({

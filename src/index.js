@@ -18,12 +18,22 @@ import './styles/index.css';
 
 const history = syncHistoryWithStore(browserHistory, store)
 
+const requireGamertag = (nextState, replace) => {
+  const state = store.getState();
+  if(Object.keys(state.user).length === 0) {
+    replace({
+      pathname: '/',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
 const app = (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={StartGame}/>
-        <Route path="/lobby" component={Lobby}/>
+        <Route path="/lobby" component={Lobby} onEnter={requireGamertag}/>
       </Route>
     </Router>
   </Provider>
