@@ -30,3 +30,29 @@ export const createGame = (action$, store) => action$
       },
     }
   ));
+
+  export const getRandomGIF = (action$, store) => action$
+  .ofType(ActionTypes.GET_RANDOM_GIF)
+  .switchMap(data => Observable.ajax({
+      url: 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
+      crossDomain: true,
+      method: 'GET',
+      createXHR: function () {
+        return new XMLHttpRequest();
+      }
+  }).map(res => res.response)
+    .mergeMap(response => Observable.of(
+      {
+        type: ActionTypes.GET_RANDOM_GIF_SUCCESS,
+        payload: response.data,
+      }
+    ))
+    .catch(error => Observable.of(
+      {
+        type: ActionTypes.GET_RANDOM_GIF_FAILURE,
+        payload: {
+          error,
+        },
+      }
+    )),
+  );

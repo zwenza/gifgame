@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
 import { Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import Spinner from '../Spinner';
+
+import * as GameActions from '../../actions/game'
 
 import '../../styles/GameQuestionView.css'
 
@@ -11,6 +17,10 @@ class GameQuestionView extends Component {
       value: '',
       words: []
     }
+  }
+
+  componentDidMount() {
+    this.props.gameActions.getRandomGIF();
   }
 
   handleSubmit = (e) => {
@@ -32,13 +42,13 @@ class GameQuestionView extends Component {
         <Grid>
           <Row className="gif">
             <Col md={12}>
-              <img src="https://media.giphy.com/media/3o7TKECNuyE3fyl8Hu/giphy.gif" alt="Gif"/>
+              {this.props.game.loading ? <Spinner/> : <img src={this.props.game.url} alt="Gif"/>}
             </Col>
           </Row>
           <Row className="words">
             <Col md={6} mdOffset={3}>
               <div className="words-wrapper">
-                { this.state.words.map((word, i) =>  <span className="label label-primary" key={i}>{word}</span>)}
+                { this.state.words.map((word, i) =>  <span className="label label-primary" key={i}>{word}</span>) }
               </div>
             </Col>
           </Row>
@@ -66,4 +76,15 @@ class GameQuestionView extends Component {
   }
 }
 
-export default GameQuestionView;
+const mapStateToProps = state => ({
+  game: state.game
+});
+
+const mapDispatchToProps = dispatch => ({
+  gameActions: bindActionCreators(GameActions, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GameQuestionView);

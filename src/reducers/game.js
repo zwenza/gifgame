@@ -1,4 +1,9 @@
-import { CREATE_GAME_SUCCESS } from '../constants/ActionTypes'
+import {
+  CREATE_GAME_SUCCESS,
+  GET_RANDOM_GIF,
+  GET_RANDOM_GIF_SUCCESS,
+  GET_RANDOM_GIF_FAILURE
+} from '../constants/ActionTypes'
 
 export default function(state = {}, action) {
   switch(action.type){
@@ -7,6 +12,22 @@ export default function(state = {}, action) {
         ...state,
         currentGame: action.payload
       };
+    case GET_RANDOM_GIF:
+      return {
+        ...state,
+        loading: true
+      }
+    case GET_RANDOM_GIF_SUCCESS:
+      return {
+        ...state,
+        url: action.payload.image_original_url,
+        loading: false
+      }
+    case GET_RANDOM_GIF_FAILURE:
+      return {
+        ...state,
+        loading: false
+      }
     default:
       return state;
   }

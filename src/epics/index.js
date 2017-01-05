@@ -1,6 +1,6 @@
 import { createUser } from './user'
 import { acceptInvite, declineInvite, invitePlayer } from './lobby'
-import { createGame } from './game'
+import { createGame, getRandomGIF } from './game'
 import { combineEpics } from 'redux-observable'
 
 const rootEpic = combineEpics(
@@ -8,7 +8,8 @@ const rootEpic = combineEpics(
   acceptInvite,
   declineInvite,
   invitePlayer,
-  createGame
+  createGame,
+  getRandomGIF
 );
 
 export default rootEpic;
