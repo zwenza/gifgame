@@ -4,6 +4,7 @@ import firebase from 'firebase';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux';
+import { ConfirmModal, ActionModal } from '../Modal'
 
 import * as UserActions from '../../actions/user'
 import * as LobbyActions from '../../actions/lobby'
@@ -119,46 +120,30 @@ class Lobby extends Component {
   }
 
   render(){
-    const declinedModal = (
-      <Modal show={this.state.showDeclinedModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Game Request declined!!!! WTF??</Modal.Title>
-        </Modal.Header>
+    const DeclineInviteModal = ActionModal({
+      title: <div>Game Request declined!!!! WTF??</div>,
+      show: this.state.showDeclinedModal,
+      action: this.closeDeclinedModal,
+      actionLabel: 'Cancel'
+    })
 
-        <Modal.Footer>
-          <Button bsStyle="danger" onClick={this.closeDeclinedModal}>Cancel</Button>
-        </Modal.Footer>
+    const InviteModal = ConfirmModal({
+      title: <div>Create Lobby with <strong>{this.state.otherPlayer}</strong></div>,
+      show: this.state.showModal,
+      cancel: this.close,
+      cancelLabel: 'Cancel',
+      confirm: this.invitePlayer,
+      confirmLabel: 'Create Lobby'
+    })
 
-      </Modal>
-    )
-
-    const modal = (
-      <Modal show={this.state.showModal} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create Lobby with <strong>{this.state.otherPlayer}</strong></Modal.Title>
-        </Modal.Header>
-
-        <Modal.Footer>
-          <Button bsStyle="primary" onClick={this.invitePlayer}>Create Lobby</Button>
-          <Button bsStyle="danger" onClick={this.close}>Cancel</Button>
-        </Modal.Footer>
-
-      </Modal>
-    )
-
-    const acceptModal = (
-      <Modal show={this.state.showInvite} onHide={this.declineInvite}>
-        <Modal.Header closeButton>
-          <Modal.Title>Play against <strong>{this.state.invitedBy}</strong> ?</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Footer>
-          <Button bsStyle="primary" onClick={this.acceptInvite}>Play</Button>
-          <Button bsStyle="danger" onClick={this.declineInvite}>Decline</Button>
-        </Modal.Footer>
-
-      </Modal>
-    )
+    const AcceptInviteModal = ConfirmModal({
+      title: <div>Play against <strong>{this.state.invitedBy}</strong> ?</div>,
+      show: this.state.showInvite,
+      cancel: this.declineInvite,
+      cancelLabel: 'Decline',
+      confirm: this.acceptInvite,
+      confirmLabel: 'Play'
+    })
 
     return(
       <Row className='lobby' >
@@ -169,9 +154,9 @@ class Lobby extends Component {
           </ListGroup>
         </Col>
 
-        {modal}
-        {acceptModal}
-        {declinedModal}
+        {InviteModal}
+        {AcceptInviteModal}
+        {DeclineInviteModal}
       </Row>
     );
   }
