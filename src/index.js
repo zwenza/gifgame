@@ -8,7 +8,7 @@ import { syncHistoryWithStore } from 'react-router-redux'
 import store from './store.js'
 
 import App from './components/App';
-import Wrapper from './components/layouts/Wrapper';
+import StartGame from './components/layouts/StartGame';
 import Lobby from './components/layouts/Lobby'
 
 
@@ -22,7 +22,7 @@ const app = (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRoute component={Wrapper}/>
+        <IndexRoute component={StartGame}/>
         <Route path="/lobby" component={Lobby}/>
       </Route>
     </Router>
