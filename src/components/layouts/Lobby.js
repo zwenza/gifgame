@@ -19,14 +19,17 @@ class Lobby extends Component {
       showModal: false,
       showInvite: false,
       invitedBy: '',
-      showDeclinedModal: false
+      showDeclinedModal: false,
+      loading: true
     };
   }
 
   componentDidMount(){
     var waitingRef = firebase.database().ref('waiting/');
     waitingRef.on('value', (snapshot) => {
-      this.setState({waitingUsers: Object.keys(snapshot.val()).map(obj => obj)});
+      if(snapshot.val() !== null){
+        this.setState({waitingUsers: Object.keys(snapshot.val()).map(obj => obj), loading: false});
+      }
     });
 
     const inviteRef = firebase.database().ref('invite/' + this.props.user.name);
