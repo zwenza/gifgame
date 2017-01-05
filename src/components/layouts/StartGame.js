@@ -3,6 +3,7 @@ import { Grid, Row, Col, FormControl, Button } from 'react-bootstrap';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as UserActions from '../../actions/user'
+import { push } from 'react-router-redux';
 
 import '../../styles/StartGame.css';
 
@@ -21,6 +22,7 @@ class StartGame extends Component {
 
   createUser = () => {
     this.props.actions.createUser(this.state.value);
+    this.props.changeToLobby();
   }
 
   render() {
@@ -48,7 +50,8 @@ class StartGame extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(UserActions, dispatch)
+  actions: bindActionCreators(UserActions, dispatch),
+  changeToLobby: () => dispatch(push('/lobby'))
 });
 
 export default connect(

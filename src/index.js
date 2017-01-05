@@ -9,6 +9,7 @@ import store from './store.js'
 
 import App from './components/App';
 import Wrapper from './components/layouts/Wrapper';
+import Lobby from './components/layouts/Lobby'
 
 
 // styles
@@ -22,6 +23,7 @@ const app = (
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Wrapper}/>
+        <Route path="/lobby" component={Lobby}/>
       </Route>
     </Router>
   </Provider>
