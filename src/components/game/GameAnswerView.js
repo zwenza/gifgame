@@ -1,13 +1,61 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
+
+import * as GameActions from '../../actions/game'
+
+import '../../styles/GameAnswerView.css'
 
 class GameAnswerView extends Component {
+
+  constructor() {
+    super();
+    this.state = {
+      value: '',
+      words: ['scrubs', 'dr. cox', 'haha']
+    }
+  }
+
+  componentDidMount() {
+    setTimeout(() => this.props.gameActions.getRandomAnswerGIF(), 500)
+    setTimeout(() => this.props.gameActions.getRandomAnswerGIF(), 500)
+    setTimeout(() => this.props.gameActions.getRandomAnswerGIF(), 500)
+  }
+
   render() {
     return (
       <div className="game-answer">
-        Answer
+        <Grid>
+          <Row className="words">
+            <Col md={6} mdOffset={3}>
+              <div className="words-wrapper">
+                { this.state.words.map((word, i) =>  <span className="label label-primary" key={i}>{word}</span>) }
+              </div>
+            </Col>
+          </Row>
+          <div className="gifs">
+          {
+            this.props.game.answerGifUrls.map((url) => {
+              return <img src={url} className="gif"/>
+            })
+          }
+          </div>
+        </Grid>
       </div>
     )
   }
 }
 
-export default GameAnswerView;
+const mapStateToProps = state => ({
+  game: state.game
+});
+
+const mapDispatchToProps = dispatch => ({
+  gameActions: bindActionCreators(GameActions, dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GameAnswerView);

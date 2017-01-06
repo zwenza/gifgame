@@ -1,0 +1,30 @@
+.game-answer {
+
+}
+
+.game-answer .gif {
+  text-align: center;
+}
+
+.game-answer .words-wrapper {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.game-answer .words-wrapper span {
+  margin: 0.5rem 1rem;
+  font-size: 2rem;
+  flex: 0 1 auto;
+}
+
+.game-answer .gifs {
+  margin: 2rem 0;
+}
+
+
+.game-answer .gifs img:hover {
+  cursor: pointer;
+}

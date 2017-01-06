@@ -11,7 +11,6 @@ import * as GameActions from '../../actions/game'
 
 class Game extends Component {
   render() {
-    console.log(this.props);
     const view = this.props.user.name === this.props.game.currentGame.aktPlayer ? <GameQuestionView/> : <GameAnswerView/>
     return (
       <div className="game">

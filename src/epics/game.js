@@ -40,16 +40,45 @@ export const createGame = (action$, store) => action$
       createXHR: function () {
         return new XMLHttpRequest();
       }
-  }).map(res => res.response)
+  })
+  .do(res => console.log(res))
+  .map(res => res.response)
     .mergeMap(response => Observable.of(
       {
         type: ActionTypes.GET_RANDOM_GIF_SUCCESS,
-        payload: response.data,
+        payload: response.data.image_original_url,
       }
     ))
     .catch(error => Observable.of(
       {
         type: ActionTypes.GET_RANDOM_GIF_FAILURE,
+        payload: {
+          error,
+        },
+      }
+    )),
+  );
+
+  export const getRandomAnswerGIF = (action$, store) => action$
+  .ofType(ActionTypes.GET_RANDOM_ANSWER_GIF)
+  .switchMap(data => Observable.ajax({
+      url: 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
+      crossDomain: true,
+      method: 'GET',
+      createXHR: function () {
+        return new XMLHttpRequest();
+      }
+  })
+  .map(res => res.response)
+    .mergeMap(response => Observable.of(
+      {
+        type: ActionTypes.GET_RANDOM_ANSWER_GIF_SUCCESS,
+        payload: response.data.image_original_url,
+      }
+    ))
+    .catch(error => Observable.of(
+      {
+        type: ActionTypes.GET_RANDOM_ANSWER_GIF_FAILURE,
         payload: {
           error,
         },

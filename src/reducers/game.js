@@ -3,10 +3,17 @@ import {
   GET_RANDOM_GIF,
   GET_RANDOM_GIF_SUCCESS,
   GET_RANDOM_GIF_FAILURE,
+  GET_RANDOM_ANSWER_GIF,
+  GET_RANDOM_ANSWER_GIF_SUCCESS,
+  GET_RANDOM_ANSWER_GIF_FAILURE,
   SET_OPPONENT
 } from '../constants/ActionTypes'
 
-export default function(state = {}, action) {
+const defaultState = {
+  answerGifUrls: []
+}
+
+export default function(state = defaultState, action) {
   switch(action.type){
     case SET_OPPONENT:
       return {
@@ -24,12 +31,33 @@ export default function(state = {}, action) {
         loading: true
       }
     case GET_RANDOM_GIF_SUCCESS:
+      let gifs = state.answerGifUrls.splice(0);
+      gifs.push(action.payload);
       return {
         ...state,
-        url: action.payload.image_original_url,
+        url: action.payload,
+        answerGifUrls: gifs,
         loading: false
       }
     case GET_RANDOM_GIF_FAILURE:
+      return {
+        ...state,
+        loading: false
+      }
+    case GET_RANDOM_ANSWER_GIF:
+      return {
+        ...state,
+        loading: true
+      }
+    case GET_RANDOM_ANSWER_GIF_SUCCESS:
+      let gifs2 = state.answerGifUrls.splice(0);
+      gifs2.push(action.payload);
+      return {
+        ...state,
+        answerGifUrls: gifs2,
+        loading: false
+      }
+    case GET_RANDOM_ANSWER_GIF_FAILURE:
       return {
         ...state,
         loading: false
