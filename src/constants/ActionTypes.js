@@ -23,6 +23,7 @@ export const INVITE_PLAYER_FAILURE = 'INVITE_PLAYER_FAILURE';
 export const CREATE_GAME = 'CREATE_GAME';
 export const CREATE_GAME_SUCCESS = 'CREATE_GAME_SUCCESS';
 export const CREATE_GAME_FAILURE = 'CREATE_GAME_FAILURE';
+export const UPDATE_GAME = 'UPDATE_GAME';
 
 // game-actions
 export const GET_RANDOM_GIF = 'GET_RANDOM_GIF';

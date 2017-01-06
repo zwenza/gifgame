@@ -31,7 +31,7 @@ export const createGame = (action$, store) => action$
     }
   ));
 
-  export const getRandomGIF = (action$, store) => action$
+export const getRandomGIF = (action$, store) => action$
   .ofType(ActionTypes.GET_RANDOM_GIF)
   .switchMap(data => Observable.ajax({
       url: 'http://api.giphy.com/v1/gifs/random?api_key=dc6zaTOxFJmzC',
@@ -41,8 +41,10 @@ export const createGame = (action$, store) => action$
         return new XMLHttpRequest();
       }
   })
-  .do(res => console.log(res))
   .map(res => res.response)
+    .do(response => firebase.database().ref('game/' + store.getState().game.currentGame.name).set({
+      url: response.data.image_original_url
+    }))
     .mergeMap(response => Observable.of(
       {
         type: ActionTypes.GET_RANDOM_GIF_SUCCESS,

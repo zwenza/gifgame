@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
+import firebase from 'firebase'
 
 import * as GameActions from '../../actions/game'
 
@@ -19,10 +20,17 @@ class GameAnswerView extends Component {
 
   componentDidMount(){
     this.props.gameActions.getRandomAnswerGIF();
+
+    const gameRef = firebase.database().ref('game/' + this.props.game.currentGame.name);
+    gameRef.on('value', (snapshot) => {
+      if(snapshot.val() !== null){
+        this.props.gameActions.updateGame(snapshot.val());
+      }
+    });
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!nextProps.game.loading && nextProps.game.answerGifUrls.length < 3){
+    if(!nextProps.game.loading && nextProps.game.answerGifUrls.length < 4){
       nextProps.gameActions.getRandomAnswerGIF();
     }
   }
@@ -40,8 +48,8 @@ class GameAnswerView extends Component {
           </Row>
           <div className="gifs">
           {
-            this.props.game.answerGifUrls.map((url, i) => {
-              return <div className="gif" key={i}><img src={url} /></div>
+            this.props.game.answerGifUrls.map((url) => {
+              return <img src={url} className="gif"/>
             })
           }
           </div>

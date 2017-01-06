@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { Grid, Row, Col, Button, FormControl} from 'react-bootstrap';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import firebase from 'firebase'
 
 import Spinner from '../Spinner';
 
@@ -21,6 +22,13 @@ class GameQuestionView extends Component {
 
   componentDidMount() {
     this.props.gameActions.getRandomGIF();
+
+    const gameRef = firebase.database().ref('game/' + this.props.game.currentGame.name);
+    gameRef.on('value', (snapshot) => {
+      if(snapshot.val() !== null){
+        this.props.gameActions.updateGame(snapshot.val());
+      }
+    });
   }
 
   handleSubmit = (e) => {
@@ -42,7 +50,7 @@ class GameQuestionView extends Component {
         <Grid>
           <Row className="gif">
             <Col md={12}>
-              {this.props.game.loading ? <Spinner/> : <img src={this.props.game.url} alt="Gif"/>}
+              {this.props.game.loading ? <Spinner/> : <img src={this.props.game.currentGame.url} alt="Gif"/>}
             </Col>
           </Row>
           <Row className="words">

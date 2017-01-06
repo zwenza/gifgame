@@ -6,6 +6,7 @@ import {
   GET_RANDOM_ANSWER_GIF,
   GET_RANDOM_ANSWER_GIF_SUCCESS,
   GET_RANDOM_ANSWER_GIF_FAILURE,
+  UPDATE_GAME,
   SET_OPPONENT
 } from '../constants/ActionTypes'
 
@@ -15,6 +16,20 @@ const defaultState = {
 
 export default function(state = defaultState, action) {
   switch(action.type){
+    case UPDATE_GAME:
+      const updatedPropertyKey = [Object.keys(action.payload.game)[0]];
+      let gifs3 = state.answerGifUrls.splice(0);
+      if(updatedPropertyKey[0] === 'url'){
+        gifs3.push(action.payload.game.url);
+      }
+      return {
+        ...state,
+        currentGame: {
+          ...state.currentGame,
+          [Object.keys(action.payload.game)[0]]: action.payload.game[updatedPropertyKey]
+        },
+        answerGifUrls: gifs3
+      }
     case SET_OPPONENT:
       return {
         ...state,
@@ -35,7 +50,10 @@ export default function(state = defaultState, action) {
       gifs.push(action.payload);
       return {
         ...state,
-        url: action.payload,
+        currentGame: {
+          ...state.currentGame,
+          url: action.payload
+        },
         answerGifUrls: gifs,
         loading: false
       }
