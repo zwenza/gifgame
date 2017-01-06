@@ -9,18 +9,22 @@ import '../../styles/GameAnswerView.css'
 
 class GameAnswerView extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       value: '',
       words: ['scrubs', 'dr. cox', 'haha']
     }
   }
 
-  componentDidMount() {
-    setTimeout(() => this.props.gameActions.getRandomAnswerGIF(), 500)
-    setTimeout(() => this.props.gameActions.getRandomAnswerGIF(), 500)
-    setTimeout(() => this.props.gameActions.getRandomAnswerGIF(), 500)
+  componentDidMount(){
+    this.props.gameActions.getRandomAnswerGIF();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!nextProps.game.loading && nextProps.game.answerGifUrls.length < 3){
+      nextProps.gameActions.getRandomAnswerGIF();
+    }
   }
 
   render() {
