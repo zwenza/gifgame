@@ -22,9 +22,24 @@
 
 .game-answer .gifs {
   margin: 2rem 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-
-.game-answer .gifs img:hover {
+.game-answer .gifs .gif {
+  max-width: 50%;
+  min-width: 50%;
+  padding: 1rem;
+  flex: 1;
   cursor: pointer;
+}
+
+.game-answer .gifs .gif:hover {
+  border: 2px solid pink;
+  background-color: pink;
+}
+
+.game-answer .gifs .gif img {
+  width: 100%;
 }

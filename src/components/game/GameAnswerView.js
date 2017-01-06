@@ -40,8 +40,8 @@ class GameAnswerView extends Component {
           </Row>
           <div className="gifs">
           {
-            this.props.game.answerGifUrls.map((url) => {
-              return <img src={url} className="gif"/>
+            this.props.game.answerGifUrls.map((url, i) => {
+              return <div className="gif" key={i}><img src={url} /></div>
             })
           }
           </div>
