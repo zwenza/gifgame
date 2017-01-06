@@ -2,11 +2,17 @@ import {
   CREATE_GAME_SUCCESS,
   GET_RANDOM_GIF,
   GET_RANDOM_GIF_SUCCESS,
-  GET_RANDOM_GIF_FAILURE
+  GET_RANDOM_GIF_FAILURE,
+  SET_OPPONENT
 } from '../constants/ActionTypes'
 
 export default function(state = {}, action) {
   switch(action.type){
+    case SET_OPPONENT:
+      return {
+        ...state,
+        opponent: action.payload.opponent.name
+      }
     case CREATE_GAME_SUCCESS:
       return {
         ...state,
